@@ -6,24 +6,24 @@ theme: jekyll-theme-chirpy
 # The language of the webpage › http://www.lingoes.net/en/translator/langcode.htm
 # If it has the same name as one of the files in folder `_data/locales`, the layout language will also be changed,
 # otherwise, the layout language will use the default value of 'en'.
-lang: en
+lang: zh-CN                     # 已修改为中文
 
 # Change to your timezone › https://zones.arilyn.cc
-timezone:
+timezone: Asia/Tokyo            # 已修改为东京时区
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Chirpy # the main title
+title: OpenClaw AI Skills Lab    # 已修改站点标题
 
 tagline: A text-focused Jekyll theme # it will display as the subtitle
 
-description: >- # used by seo meta and the atom feed
-  A minimal, responsive and feature-rich Jekyll theme for technical writing.
+description: >-                 # 已修改描述内容
+  OpenClaw 本地AI助手安装教程、Skill开发指南、工具与实战
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
-url: "https://jinqiantianxia-a11y.github.io"
+url: "https://你的用户名.github.io/你的仓库名"   # 请替换为实际地址
 
 github:
   username: github_username # change to your GitHub username
@@ -99,14 +99,20 @@ theme_mode: # [light | dark]
 cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar:
+avatar: /assets/img/avatar.jpg   # 已添加头像路径
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
 social_preview_image: # string, local or CORS resources
 
 # boolean type, the global switch for TOC in posts.
-toc: true
+toc: true                       # 保持不变（已为true）
+
+# 新增：支持数学公式（需主题支持）
+katex: true
+
+# 新增：支持流程图（需主题支持）
+mermaid: true
 
 comments:
   # Global switch for the post-comment system. Keeping it empty means disabled.
@@ -151,7 +157,7 @@ pwa:
 paginate: 10
 
 # The base URL of your site
-baseurl: "/ai-skills-lab"
+baseurl: "/ai-skills-lab"   # ⚠️ 请根据实际仓库名修改，例如若仓库名为 "your-repo"，则改为 "/your-repo"
 
 # ------------ The following options are not recommended to be modified ------------------
 

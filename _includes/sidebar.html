@@ -103,17 +103,16 @@ The Side Bar -->
       {% for tab in site.tabs %}
         {% assign tab_title = tab.title | downcase %}
 
-        {% if tab_title != "tutorials/教程" and tab_title != "tutorials" %}
+        {% unless tab.url contains "tutorials" %}
           <li class="nav-item{% if page.url == tab.url %} active{% endif %}">
             <a href="{{ tab.url | relative_url }}" class="nav-link">
               <i class="fa-fw {{ tab.icon }}"></i>
               <span>{{ tab.title }}</span>
             </a>
           </li>
-        {% endif %}
+        {% endunless %}
 
-        <!-- 👇 插入位置：在 tools 后面 -->
-        {% if tab_title == "tools" or tab_title == "工具" %}
+        {% if tab.url contains "tools" %}
           <li class="nav-item custom-collapse">
             <div class="collapse-header">
               <i class="fa-fw fas fa-book"></i>

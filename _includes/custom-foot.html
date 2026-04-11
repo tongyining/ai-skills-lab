@@ -1,0 +1,162 @@
+<script>
+(function() {
+  // ==================== 滚动保存功能 ====================
+  var STORAGE_KEY = 'chirpy-sidebar-scroll';
+  var sidebar = null;
+  var debugEnabled = true;
+
+  function log() {
+    if (!debugEnabled) return;
+    console.log('[SidebarScroll]', ...arguments);
+  }
+
+  function getSidebar() {
+    if (sidebar && sidebar.isConnected) return sidebar;
+    sidebar = document.querySelector('#sidebar');
+    return sidebar;
+  }
+
+  function restoreScroll() {
+    var sidebarEl = getSidebar();
+    if (!sidebarEl) {
+      log('❌ restoreScroll: 找不到 #sidebar 元素');
+      return;
+    }
+    var saved = sessionStorage.getItem(STORAGE_KEY);
+    log('📥 restoreScroll: 读取 sessionStorage →', saved);
+    if (saved !== null) {
+      var pos = parseInt(saved, 10);
+      if (!isNaN(pos)) {
+        sidebarEl.scrollTop = pos;
+        log('✅ 已恢复侧边栏滚动位置到', pos);
+      } else {
+        log('⚠️ 保存的值不是数字:', saved);
+      }
+    } else {
+      log('ℹ️ 没有保存的滚动位置');
+    }
+  }
+
+  function saveScroll(reason) {
+    var sidebarEl = getSidebar();
+    if (!sidebarEl) {
+      log('❌ saveScroll(%s): 找不到 #sidebar', reason);
+      return;
+    }
+    var currentPos = sidebarEl.scrollTop;
+    sessionStorage.setItem(STORAGE_KEY, currentPos);
+    log('💾 saveScroll(%s): 保存位置 %d', reason, currentPos);
+  }
+
+  function captureLinkClicks() {
+    var sidebarEl = getSidebar();
+    if (!sidebarEl) {
+      log('❌ captureLinkClicks: 找不到侧边栏');
+      return;
+    }
+    var links = sidebarEl.querySelectorAll('a');
+    log('🔗 找到侧边栏内链接数量:', links.length);
+    links.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var href = link.getAttribute('href');
+        if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
+          log('🖱️ 点击链接:', href);
+          saveScroll('link-click');
+        }
+      });
+    });
+  }
+
+  function bindVisibilityChange() {
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        log('👁️ 页面隐藏，保存滚动位置');
+        saveScroll('visibilitychange');
+      }
+    });
+  }
+
+  function bindBeforeUnload() {
+    window.addEventListener('beforeunload', function() {
+      log('🚪 beforeunload 触发');
+      saveScroll('beforeunload');
+    });
+  }
+
+  function bindPageShow() {
+    window.addEventListener('pageshow', function(event) {
+      log('📄 pageshow 触发, persisted =', event.persisted);
+      restoreScroll();
+    });
+  }
+
+  function watchSidebarChanges() {
+    var targetNode = document.body;
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList' || mutation.type === 'subtree') {
+          var newSidebar = getSidebar();
+          if (newSidebar && !sidebar) {
+            log('🔍 检测到侧边栏被添加到 DOM');
+            sidebar = newSidebar;
+            captureLinkClicks();
+          }
+        }
+      });
+    });
+    observer.observe(targetNode, { childList: true, subtree: true });
+    log('👀 已启动 MutationObserver 监听 DOM 变化');
+  }
+
+  // 滚动保存初始化
+  function initScroll() {
+    log('🚀 滚动保存脚本初始化开始');
+    var sidebarEl = getSidebar();
+    if (sidebarEl) {
+      log('✅ 侧边栏已存在');
+      captureLinkClicks();
+    } else {
+      log('⚠️ 侧边栏尚未加载，启动 MutationObserver 等待');
+      watchSidebarChanges();
+    }
+    restoreScroll();
+    bindVisibilityChange();
+    bindBeforeUnload();
+    bindPageShow();
+    log('🚀 滚动保存脚本初始化完成');
+  }
+
+  // ==================== 折叠菜单功能 ====================
+  function initSubmenu() {
+    var toggles = document.querySelectorAll('.submenu-toggle');
+    if (!toggles.length) return;
+
+    toggles.forEach(function(toggle) {
+      // 移除可能残留的旧监听器（通过替换克隆元素，但为了简单，直接添加新监听）
+      toggle.removeEventListener('click', handleSubmenuClick);
+      toggle.addEventListener('click', handleSubmenuClick);
+    });
+  }
+
+  function handleSubmenuClick(e) {
+    e.preventDefault();
+    var parentLi = this.closest('.has-submenu');
+    if (!parentLi) return;
+    var submenu = parentLi.querySelector('.submenu-list');
+    if (!submenu) return;
+    submenu.classList.toggle('show');
+    this.classList.toggle('open');
+  }
+
+  // 页面加载完成后执行初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      initScroll();
+      initSubmenu();
+    });
+  } else {
+    initScroll();
+    initSubmenu();
+  }
+})();
+</script>

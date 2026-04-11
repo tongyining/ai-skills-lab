@@ -1,32 +1,82 @@
 <!-- The Side Bar -->
 <style>
+/* ================= 折叠菜单整体 ================= */
 #sidebar .custom-collapse {
   cursor: pointer;
 }
 
+/* header（标题行） */
 #sidebar .custom-collapse .collapse-header {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  color: var(--sidebar-muted);
+  transition: all 0.2s ease;
 }
 
-#sidebar .custom-collapse .collapse-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: all 0.3s ease;
+#sidebar .custom-collapse .collapse-header:hover {
+  color: var(--sidebar-active);
 }
 
-#sidebar .custom-collapse.open .collapse-body {
-  max-height: 300px;
-}
-
+/* 箭头 */
 #sidebar .custom-collapse .arrow {
   margin-left: auto;
-  transition: transform 0.3s;
+  transition: transform 0.25s ease;
 }
 
 #sidebar .custom-collapse.open .arrow {
   transform: rotate(90deg);
+}
+
+/* ================= 子菜单 ================= */
+#sidebar .custom-collapse .collapse-body {
+  list-style: none;           /* ❗去掉圆点 */
+  padding-left: 0;
+  margin: 0;
+
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+/* 展开 */
+#sidebar .custom-collapse.open .collapse-body {
+  max-height: 500px;
+}
+
+/* 每一项 */
+#sidebar .custom-collapse .collapse-body li {
+  list-style: none;
+}
+
+/* 链接样式（核心） */
+#sidebar .custom-collapse .collapse-body a {
+  display: block;
+  padding: 8px 24px 8px 40px;   /* 左侧缩进 */
+  font-size: 0.9rem;
+  color: var(--sidebar-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+}
+
+/* hover */
+#sidebar .custom-collapse .collapse-body a:hover {
+  color: var(--sidebar-active);
+  background-color: rgba(255,255,255,0.05);
+}
+
+/* 当前页面高亮（可选） */
+#sidebar .custom-collapse .collapse-body a.active {
+  color: var(--sidebar-active);
+  border-left: 2px solid var(--sidebar-active);
+  background-color: rgba(255,255,255,0.08);
+}
+
+/* 分隔感（微弱） */
+#sidebar .custom-collapse .collapse-body li + li a {
+  border-top: 1px solid rgba(255,255,255,0.03);
 }
 </style>
 <aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
@@ -90,9 +140,9 @@
         </div>
 
         <ul class="collapse-body">
-          <li><a class="dropdown-item" href="{{ '/beginner/' | relative_url }}">🌱 入门版</a></li>
-          <li><a class="dropdown-item" href="{{ '/intermediate/' | relative_url }}">🚀 进阶版</a></li>
-          <li><a class="dropdown-item" href="{{ '/advanced/' | relative_url }}">👑 高级版</a></li>
+          <li><a href="{{ '/beginner/' | relative_url }}">🌱 入门版</a></li>
+          <li><a href="{{ '/intermediate/' | relative_url }}">🚀 进阶版</a></li>
+          <li><a href="{{ '/advanced/' | relative_url }}">👑 高级版</a></li>
         </ul>
       </li>
       <!-- 注意：如果你还有 categories 和 tags 没有在 site.tabs 中，可以手动添加，但通常它们已经在 tabs 里了 -->

@@ -1,4 +1,4 @@
-<!-- The Side Bar -->
+The Side Bar -->
 <style>
 /* ================= 折叠菜单整体 ================= */
 #sidebar .custom-collapse {
@@ -102,13 +102,30 @@
       <!-- 遍历正常的 tabs（排除教程，因为我们要手动添加折叠菜单） -->
       {% for tab in site.tabs %}
         {% assign tab_title = tab.title | downcase %}
-        <!-- 排除 tutorials/教程 项 -->
+
         {% if tab_title != "tutorials/教程" and tab_title != "tutorials" %}
           <li class="nav-item{% if page.url == tab.url %} active{% endif %}">
             <a href="{{ tab.url | relative_url }}" class="nav-link">
               <i class="fa-fw {{ tab.icon }}"></i>
               <span>{{ tab.title }}</span>
             </a>
+          </li>
+        {% endif %}
+
+        <!-- 👇 插入位置：在 tools 后面 -->
+        {% if tab_title == "tools" or tab_title == "工具" %}
+          <li class="nav-item custom-collapse">
+            <div class="collapse-header">
+              <i class="fa-fw fas fa-book"></i>
+              <span>TUTORIALS/教程</span>
+              <i class="arrow"></i>
+            </div>
+
+            <ul class="collapse-body">
+              <li><a href="{{ '/beginner/' | relative_url }}">🌱 入门版</a></li>
+              <li><a href="{{ '/intermediate/' | relative_url }}">🚀 进阶版</a></li>
+              <li><a href="{{ '/advanced/' | relative_url }}">👑 高级版</a></li>
+            </ul>
           </li>
         {% endif %}
       {% endfor %}
@@ -132,7 +149,7 @@
         </ul>
       </li> -->
 
-      <li class="nav-item custom-collapse">
+      <!-- <li class="nav-item custom-collapse">
         <div class="collapse-header">
           <i class="fa-fw fas fa-book"></i>
           <span>TUTORIALS/教程</span>
@@ -144,7 +161,7 @@
           <li><a href="{{ '/intermediate/' | relative_url }}">🚀 进阶版</a></li>
           <li><a href="{{ '/advanced/' | relative_url }}">👑 高级版</a></li>
         </ul>
-      </li>
+      </li> -->
       <!-- 注意：如果你还有 categories 和 tags 没有在 site.tabs 中，可以手动添加，但通常它们已经在 tabs 里了 -->
     </ul>
   </nav>
@@ -182,4 +199,4 @@
   </div>
   <!-- .sidebar-bottom -->
 </aside>
-<!-- #sidebar -->
+<!-- #sidebar

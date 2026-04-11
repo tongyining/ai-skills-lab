@@ -64,7 +64,7 @@ The avatar and favicon for the project's website are sourced from
 [ClipartMAX][clipartmax].
 
 ## License
-
+md
 This project is published under the [MIT License][license].
 
 [gem]: https://rubygems.org/gems/jekyll-theme-chirpy

@@ -113,7 +113,7 @@ comments:
   provider: giscus   # ← 必须有这一行
 
   giscus:
-    repo: "tongyiningai/ai-skills-lab"
+    repo: "tongyining/ai-skills-lab"
     repo_id: "R_kgDOR8EOoQ"
     category: "Announcements"
     category_id: "DIC_kwDOR8EOoc4C6pyb"
